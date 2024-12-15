@@ -12,7 +12,14 @@ const stringify = (value, depth) => {
 };
 
 const formatOutput = (obj, depth) => {
-  const { key, type, children, value, value1, value2 } = obj;
+  const {
+    key,
+    type,
+    children,
+    value,
+    value1,
+    value2,
+  } = obj;
 
   switch (type) {
     case 'added': {

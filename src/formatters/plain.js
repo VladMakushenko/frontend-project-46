@@ -8,7 +8,14 @@ const stringify = (value) => {
 };
 
 const formatOutput = (obj, parentName) => {
-  const { key, type, children, value, value1, value2 } = obj;
+  const {
+    key,
+    type,
+    children,
+    value,
+    value1,
+    value2,
+  } = obj;
 
   const parentKey = parentName ? `${parentName}.${key}` : key;
 

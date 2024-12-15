@@ -18,7 +18,12 @@ const getObjectDiff = (obj1, obj2) => {
       return { key, type: 'parent', children: getObjectDiff(oldValue, newValue) };
     }
     if (!_.isEqual(oldValue, newValue)) {
-      return { key, type: 'changed', value1: oldValue, value2: newValue };
+      return {
+        key,
+        type: 'changed',
+        value1: oldValue,
+        value2: newValue,
+      };
     }
 
     return { key, type: 'unchanged', value: oldValue };
