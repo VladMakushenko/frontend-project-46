@@ -12,27 +12,19 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'UTF-8');
 
 describe('Generate output based on the difference between two files', () => {
-  const json1 = getFixturePath('file1.json');
-  const json2 = getFixturePath('file2.json');
-  const yml1 = getFixturePath('file1.yml');
-  const yml2 = getFixturePath('file2.yml');
   const expectedStylish = readFile('expected_stylish.txt');
   const expectedPlain = readFile('expected_plain.txt');
   const expectedJSON = readFile('expected_json.txt');
 
-  const testCases = [
-    [json1, json2, expectedStylish],
-    [yml1, yml2, expectedStylish],
-    [json1, json2, expectedStylish, 'stylish'],
-    [yml1, yml2, expectedStylish, 'stylish'],
-    [json1, json2, expectedPlain, 'plain'],
-    [yml1, yml2, expectedPlain, 'plain'],
-    [json1, json2, expectedJSON, 'json'],
-    [yml1, yml2, expectedJSON, 'json'],
-  ];
+  const formats = ['json', 'yml'];
 
-  test.each(testCases)('Should output diff in different formats', (file1, file2, expected, format = 'stylish') => {
-    const result = genDiff(file1, file2, format);
-    expect(result).toEqual(expected);
+  test.each(formats)('Should output diff in different formats', (format) => {
+    const file1 = getFixturePath(`file1.${format}`);
+    const file2 = getFixturePath(`file2.${format}`);
+
+    expect(genDiff(file1, file2)).toEqual(expectedStylish);
+    expect(genDiff(file1, file2, 'stylish')).toEqual(expectedStylish);
+    expect(genDiff(file1, file2, 'plain')).toEqual(expectedPlain);
+    expect(genDiff(file1, file2, 'json')).toEqual(expectedJSON);
   });
 });
