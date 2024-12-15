@@ -4,7 +4,7 @@ import parseData from './parsers.js';
 import getObjectDiff from './getObjectDiff.js';
 import formatDiff from './formatters/index.js';
 
-const genDiff = (file1, file2, format) => {
+const genDiff = (file1, file2, format = 'stylish') => {
   const firstFile = readFile(file1);
   const secondFile = readFile(file2);
   const firstFileExtension = getFileExtension(file1);
