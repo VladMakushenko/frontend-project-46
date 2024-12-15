@@ -1,7 +1,11 @@
 import _ from 'lodash';
 
-const setQuotes = (value) => (_.isString(value) ? `'${value}'` : value);
-const stringify = (value) => (_.isObject(value) || _.isArray(value) ? '[complex value]' : setQuotes(value));
+const stringify = (value) => {
+  if (_.isObject(value) || _.isArray(value)) return '[complex value]';
+  if (_.isString(value)) return `'${value}'`;
+
+  return value;
+};
 
 const formatOutput = (obj, parentName) => {
   const { key, type, children, value, value1, value2 } = obj;
@@ -10,13 +14,13 @@ const formatOutput = (obj, parentName) => {
 
   switch (type) {
     case 'added':
-      return `Property ${setQuotes(parentKey)} was added with value: ${stringify(value)}`;
+      return `Property '${parentKey}' was added with value: ${stringify(value)}`;
     case 'removed':
-      return `Property ${setQuotes(parentKey)} was removed`;
+      return `Property '${parentKey}' was removed`;
     case 'unchanged':
       return '';
     case 'changed':
-      return `Property ${setQuotes(parentKey)} was updated. From ${stringify(value1)} to ${stringify(value2)}`;
+      return `Property '${parentKey}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
     case 'parent':
       return children.map((child) => formatOutput(child, parentKey)).filter((child) => !!child).join('\n');
     default:
@@ -24,6 +28,6 @@ const formatOutput = (obj, parentName) => {
   }
 };
 
-const formatAsPlain = (diff) => `${diff.map((obj) => formatOutput(obj)).join('\n')}`;
+const formatAsPlain = (diff) => `${diff.map((obj) => formatOutput(obj)).join('\n').trim()}`;
 
 export default formatAsPlain;
